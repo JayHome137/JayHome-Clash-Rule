@@ -166,7 +166,6 @@ rules:
   - DOMAIN-KEYWORD,wujinapi,🔯 香港故转
   - DOMAIN-KEYWORD,qrssuv,🔯 香港故转
   - DOMAIN-SUFFIX,qichiyu.com,🚀 默认代理
-  - DOMAIN-SUFFIX,client-rapi-missav.recombee.com,🚀 默认代理
   - DOMAIN-KEYWORD,ping0.cc,🚀 默认代理
   - RULE-SET,proxylite,🚀 默认代理
   - RULE-SET,ai,🤖 ChatGPT
