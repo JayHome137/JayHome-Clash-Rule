@@ -1,7 +1,9 @@
-nameserver:
-  - 223.5.5.5
-  - 8.8.8.8
-
+# DNS防泄露版本
+# 不是必须请勿用，不懂不要随便更改DNS模块
+# 必读！！！
+# 注意规则在满足自己需求情况下，尽量做到精简，不要过度复杂，以免影响性能。
+# 跑裸核用户请自行去掉下方控制面板模块的注释。
+# 机场订阅
 proxy-providers:
   BosLife:
     url: "https://tvm.xa5z.org/xm6bh9/989df4764cbbdee64a8ed54c2f334876"
@@ -38,7 +40,9 @@ proxy-providers:
       enable: true
       url: https://www.gstatic.com/generate_204
       interval: 300
-    proxy: 直连    
+    proxy: 直连   
+    
+# 节点信息 
 proxies:
   - {name: 直连, type: direct}
 
@@ -77,15 +81,14 @@ sniffer:
   sniff:
     HTTP:
       ports: [80, 8080-8880]
-      override-destination: true
+      override-destination: false
     TLS:
       ports: [443, 8443]
     QUIC:
       ports: [443, 8443]
-  force-domain:
-    - "+.v2ex.com"
   skip-domain:
-    - "+.baidu.com"
+    - "Mijia Cloud"
+    - "+.push.apple.com"
 
 # 入站  
 tun:
@@ -109,19 +112,26 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 28.0.0.1/8
   fake-ip-filter-mode: blacklist
+  default-nameserver:
+    - tls://223.5.5.5
+    - tls://223.6.6.6
   proxy-server-nameserver:
-      - 119.29.29.29
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
   direct-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
   nameserver:
-    - https://8.8.8.8/dns-query
-  nameserver-policy:
-    "rule-set:private_domain,cn_domain,apple_domain":
-      - 223.5.5.5
-      - 119.29.29.29
+    - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
   fake-ip-filter:
+    - "*"
+    - "+.lan"
+    - "+.local"
     - "rule-set:private_domain,cn_domain,apple_domain"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "time.*.com"
+    - "+.market.xiaomi.com"
  
 # 出站策略，根据自己情况调整每个策略里分组排序，增删都可以，比如把美国自动放到第一个，比如删除香港故转，注意别漏掉表情逗号等。
 # 如果相应分组没有筛选到对应的国家，请根据自己节点名字调整筛选关键字。
@@ -166,6 +176,7 @@ rules:
   - DOMAIN-KEYWORD,wujinapi,🔯 香港故转
   - DOMAIN-KEYWORD,qrssuv,🔯 香港故转
   - DOMAIN-SUFFIX,qichiyu.com,🚀 默认代理
+  - DOMAIN-SUFFIX,client-rapi-missav.recombee.com,🚀 默认代理
   - DOMAIN-KEYWORD,ping0.cc,🚀 默认代理
   - RULE-SET,proxylite,🚀 默认代理
   - RULE-SET,ai,🤖 ChatGPT
