@@ -175,8 +175,11 @@ rules:
   - DOMAIN-KEYWORD,daayee,🔯 香港故转
   - DOMAIN-KEYWORD,wujinapi,🔯 香港故转
   - DOMAIN-KEYWORD,qrssuv,🔯 香港故转
-  - DOMAIN-KEYWORD,missav,🔯 香港故转
+  - DOMAIN-KEYWORD,missav,🚀 默认代理
   - DOMAIN-KEYWORD,ping0.cc,🚀 默认代理
+  - DOMAIN-KEYWORD,cloud-ip.cc,🚀 默认代理
+  - DOMAIN-KEYWORD,netlib.re,🚀 默认代理
+  - DOMAIN-KEYWORD,qzz.io,🚀 默认代理
   - DOMAIN-SUFFIX,qichiyu.com,🚀 默认代理
   - RULE-SET,proxylite,🚀 默认代理
   - RULE-SET,ai,🤖 ChatGPT
