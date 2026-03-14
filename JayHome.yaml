@@ -15,7 +15,7 @@ proxy-providers:
       interval: 300
     proxy: 直连
   SSRDOG:
-    url: "https://ee935b670b69904d1de0dca570f2b26d.beijing-aliyuncs.sbs/s?t=ee935b670b69904d1de0dca570f2b26d.jpg"
+    url: "https://ee935b670b69904d1de0dca570f2b26d.cdn-res-oss-cn-hongkong-aliyuncs-file.com/s?t=ee935b670b69904d1de0dca570f2b26d.jpg"
     type: http
     interval: 86400
     health-check:
@@ -47,19 +47,13 @@ proxies:
   - {name: 直连, type: direct}
 
 # 全局配置 
-port: 7890
-socks-port: 7891
-redir-port: 7892
-mixed-port: 7893
-tproxy-port: 7894
+mixed-port: 7890
 allow-lan: true
 bind-address: "*"
 ipv6: false
 unified-delay: true
 tcp-concurrent: true
-# interface-name: enp6s18
 log-level: warning
-find-process-mode: 'off'
 global-client-fingerprint: chrome
 keep-alive-idle: 600
 keep-alive-interval: 15
@@ -104,8 +98,10 @@ tun:
   auto-detect-interface: false
 
 # DNS模块
+# DNS模块
 dns:
   enable: true
+  cache-algorithm: arc
   listen: 0.0.0.0:1053
   ipv6: false
   respect-rules: true
@@ -113,8 +109,7 @@ dns:
   fake-ip-range: 28.0.0.1/8
   fake-ip-filter-mode: blacklist
   default-nameserver:
-    - tls://223.5.5.5
-    - tls://223.6.6.6
+    - https://223.5.5.5/dns-query
   proxy-server-nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
@@ -124,14 +119,7 @@ dns:
   nameserver:
     - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
   fake-ip-filter:
-    - "*"
-    - "+.lan"
-    - "+.local"
-    - "rule-set:private_domain,cn_domain,apple_domain"
-    - "+.msftconnecttest.com"
-    - "+.msftncsi.com"
-    - "time.*.com"
-    - "+.market.xiaomi.com"
+    - "rule-set:fakeipfilter_domain"
  
 # 出站策略，根据自己情况调整每个策略里分组排序，增删都可以，比如把美国自动放到第一个，比如删除香港故转，注意别漏掉表情逗号等。
 # 如果相应分组没有筛选到对应的国家，请根据自己节点名字调整筛选关键字。
@@ -167,20 +155,23 @@ proxy-groups:
 rules:
   - RULE-SET,private_ip,直连,no-resolve
   - RULE-SET,private_domain,直连
+  - DOMAIN-KEYWORD,zuidapic,直连
+  - DOMAIN-KEYWORD,zuidazy,直连
   - DOMAIN-KEYWORD,dytt,🔯 香港故转
+  - DOMAIN-KEYWORD,wujinapi,🔯 香港故转
+  - DOMAIN-KEYWORD,qsstvw,🔯 香港故转
+  - DOMAIN-KEYWORD,qewbn,🔯 香港故转
   - DOMAIN-KEYWORD,hhzyapi,🔯 香港故转
   - DOMAIN-KEYWORD,hhmage,🔯 香港故转
-  - DOMAIN-KEYWORD,zuidapic,🔯 香港故转
-  - DOMAIN-KEYWORD,zuidazy,🔯 香港故转
   - DOMAIN-KEYWORD,daayee,🔯 香港故转
-  - DOMAIN-KEYWORD,wujinapi,🔯 香港故转
   - DOMAIN-KEYWORD,qrssuv,🔯 香港故转
-  - DOMAIN-KEYWORD,missav,🚀 默认代理
+  - DOMAIN-KEYWORD,reddit,🔯 香港故转
+  - DOMAIN-KEYWORD,missav,🇭🇰 香港节点
+  - DOMAIN-KEYWORD,cloudflare,🇭🇰 香港节点
   - DOMAIN-KEYWORD,ping0.cc,🚀 默认代理
-  - DOMAIN-KEYWORD,cloud-ip.cc,🚀 默认代理
-  - DOMAIN-KEYWORD,netlib.re,🚀 默认代理
-  - DOMAIN-KEYWORD,qzz.io,🚀 默认代理
-  - DOMAIN-SUFFIX,qichiyu.com,🚀 默认代理
+  - DOMAIN-KEYWORD,cloud-ip.cc,🔯 香港故转
+  - DOMAIN-KEYWORD,ccwu.cc,🔯 香港故转
+  - DOMAIN-KEYWORD,qzz.io.cc,🔯 香港故转
   - RULE-SET,proxylite,🚀 默认代理
   - RULE-SET,ai,🤖 ChatGPT
   - RULE-SET,github_domain,👨🏿‍💻 GitHub
@@ -209,9 +200,10 @@ rule-anchor:
   domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
   class: &class {type: http, interval: 86400, behavior: classical, format: text}
 rule-providers: 
+  fakeipfilter_domain: {<<: *domain, url: "https://raw.githubusercontent.com/wwqgtxx/clash-rules/release/fakeip-filter.mrs"}
   private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
   proxylite: { <<: *class, url: "https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/main/proxy.list"}
-  ai: {  <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs" }
+  ai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs" }
   youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
   google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"}
   github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"}
